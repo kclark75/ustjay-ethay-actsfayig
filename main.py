@@ -13,16 +13,30 @@ def get_fact():
 
     soup = BeautifulSoup(response.content, "html.parser")
     facts = soup.find_all("div", id="content")
+    print(facts[0].getText())
 
     return facts[0].getText()
 
 
+def get_pig_latin(quote):
+    payload = {'input_text': quote}
+    
+    response = requests.post("http://hidden-journey-62459.herokuapp.com/piglatinize/",
+                             data=payload)
+    print(response.url)
+    return response.url
+
 @app.route('/')
 def home():
-    return "FILL ME!"
+    fact = get_fact().strip()
+    header = get_pig_latin(fact)
+    print(fact)
+    print(header)
+    # return facts[0].getText()
+    return Response(response=header, mimetype='gzip')
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 6787))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
 
