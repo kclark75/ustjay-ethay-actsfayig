@@ -18,7 +18,7 @@ def get_fact():
     return facts[0].getText()
 
 
-def get_pig_latin(quote):
+def pig_latinizer(quote):
     payload = {'input_text': quote}
     
     response = requests.post("http://hidden-journey-62459.herokuapp.com/piglatinize/",
@@ -26,13 +26,13 @@ def get_pig_latin(quote):
     print(response.url)
     return response.url
 
+
 @app.route('/')
 def home():
     fact = get_fact().strip()
-    header = get_pig_latin(fact)
+    header = pig_latinizer(fact)
     print(fact)
     print(header)
-    # return facts[0].getText()
     return Response(response=header, mimetype='gzip')
 
 
